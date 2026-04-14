@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta name="theme-color" content="#c0392b">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>ปลากระป๋อง 🥫</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&family=Playfair+Display:wght@700;900&family=IM+Fell+English+SC&display=swap" rel="stylesheet">
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+
+    <!-- Floating background fish -->
+    <div class="bg-fish" aria-hidden="true">
+        <span>🐟</span><span>🐠</span><span>🐡</span>
+        <span>🐟</span><span>🐠</span><span>🐟</span>
+    </div>
+
+    <div class="page-wrapper">
+        <div class="can-label">
+
+            <!-- Top decorative band -->
+            <div class="band band--top">
+                <div class="band-inner">
+                    <span class="band-text">✦ PREMIUM QUALITY ✦ คุณภาพเยี่ยม ✦ PREMIUM QUALITY ✦</span>
+                </div>
+            </div>
+
+            <!-- Label header -->
+            <div class="label-header">
+                <p class="label-subtitle">ผลิตภัณฑ์คัดพิเศษ · FINE SELECTION</p>
+                <h1 class="label-title">ปลากระป๋อง</h1>
+                <p class="label-eng">CANNED FISH</p>
+                <div class="ornament">⸻ ✦ ⸻</div>
+            </div>
+
+            <!-- Illustration area -->
+            <div class="illustration">
+                <div class="fish-scene">
+                    <span class="fish-big">🥫</span>
+                    <div class="waves">
+                        <div class="wave wave1"></div>
+                        <div class="wave wave2"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form area -->
+            <div class="label-body">
+                <p class="instruction">กรุณายืนยันรหัสผ่านเพื่อเปิดกระป๋อง</p>
+                <p class="instruction-eng">Enter password to open the can</p>
+
+                <form id="password-form">
+                    <div class="form-group">
+                        <div class="input-wrapper">
+                            <span class="input-icon">🔑</span>
+                            <input
+                                type="text"
+                                id="text-password"
+                                class="intext"
+                                placeholder="รหัสผ่าน..."
+                                autocomplete="off"
+                                autocorrect="off"
+                                autocapitalize="off"
+                                spellcheck="false"
+                            >
+                        </div>
+                        <button type="submit" id="submit">
+                            <span class="btn-text">ตรวจสอบรหัส</span>
+                            <span class="btn-icon">→</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Bottom decorative band -->
+            <div class="band band--bottom">
+                <div class="band-inner">
+                    <span class="band-text">✦ VERIFIED SINCE 2025 ✦ ผ่านการรับรอง ✦ VERIFIED SINCE 2025 ✦</span>
+                </div>
+            </div>
+
+        </div>
+
+        <p class="footer-note">© ปลากระป๋อง Industries · All Rights Reserved</p>
+    </div>
+
+    <script>
+        const passwordForm = document.getElementById("password-form");
+
+        passwordForm.addEventListener("submit", async function(e) {
+            e.preventDefault();
+
+            const textElement = document.getElementById("text-password");
+            const passwordValue = textElement.value.trim();
+
+            if (passwordValue === "") return;
+
+            // Loading popup
+            Swal.fire({
+                title: "กำลังตรวจสอบ",
+                text: "กรุณารอสักครู่...",
+                allowOutsideClick: false,
+                customClass: { popup: 'swal-custom' },
+                didOpen: () => { Swal.showLoading(); }
+            });
+
+            await new Promise(resolve => setTimeout(resolve, 1500));
+
+            const CONFIRM_BTN_COLOR = "#c0392b";
+
+            const results = {
+                "lateral root":          { num: 1, letter: "p" },
+                "tongue anv saliva":     { num: 2, letter: "a" },
+                "frontal lobe":          { num: 3, letter: "p" },
+                "met leu ile ile asp  gly": { num: 4, letter: "a" },
+                "custard apple":         { num: 5, letter: "i" },
+            };
+
+            if (results[passwordValue]) {
+                const { num, letter } = results[passwordValue];
+                Swal.fire({
+                    icon: "success",
+                    title: "✅ ถูกต้อง!",
+                    html: `
+                        <div style="text-align:center;font-family:'Sarabun',sans-serif;">
+                            <p style="color:#888;font-size:14px;">ข้อที่</p>
+                            <p style="font-size:22px;font-weight:700;color:#333;">${num}</p>
+                            <h2 style="color:#2e7d32;font-size:48px;margin:10px 0;letter-spacing:4px;">${letter}</h2>
+                            <p style="font-size:13px;color:#aaa;letter-spacing:2px;">zuzu</p>
+                        </div>
+                    `,
+                    confirmButtonText: "รับทราบ",
+                    confirmButtonColor: CONFIRM_BTN_COLOR,
+                    customClass: { popup: 'swal-custom' }
+                });
+            } else {
+                textElement.classList.add('shake');
+                setTimeout(() => textElement.classList.remove('shake'), 600);
+
+                Swal.fire({
+                    icon: "error",
+                    title: "❌ รหัสไม่ถูกต้อง",
+                    html: `
+                        <div style="text-align:center;font-family:'Sarabun',sans-serif;">
+                            <p><b style="color:#c0392b;">${passwordValue}</b></p>
+                            <p style="color:#666;margin-top:6px;">ยังไม่ถูกน้าาาา</p>
+                        </div>
+                    `,
+                    confirmButtonText: "ลองใหม่",
+                    confirmButtonColor: CONFIRM_BTN_COLOR,
+                    customClass: { popup: 'swal-custom' }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

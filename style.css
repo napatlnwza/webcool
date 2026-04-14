@@ -1,0 +1,477 @@
+/* ===================================================
+   ปลากระป๋อง · Retro Canned Label Design System
+   Cross-platform: Mobile, Tablet, Desktop
+   =================================================== */
+
+/* --- Reset & Base --- */
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+:root {
+    --red:      #c0392b;
+    --red-dark: #962d22;
+    --gold:     #c9a84c;
+    --gold-lt:  #e8c96d;
+    --cream:    #fdf6e3;
+    --cream-dk: #f0e6c8;
+    --teal:     #1a6b6b;
+    --teal-lt:  #2a8a8a;
+    --dark:     #2c1810;
+    --mid:      #5c3d2e;
+    --light:    #9e7b5a;
+
+    --font-display: 'Playfair Display', 'IM Fell English SC', Georgia, serif;
+    --font-body:    'Sarabun', 'Noto Sans Thai', sans-serif;
+
+    --shadow-label: 0 20px 60px rgba(44, 24, 16, 0.4), 0 4px 16px rgba(44, 24, 16, 0.2);
+    --shadow-btn:   0 4px 14px rgba(192, 57, 43, 0.5);
+}
+
+/* --- Background --- */
+html, body {
+    min-height: 100%;
+    overflow-x: hidden;
+}
+
+body {
+    background-color: var(--teal);
+    background-image:
+        radial-gradient(ellipse at 20% 20%, rgba(255,255,255,0.06) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 80%, rgba(0,0,0,0.15) 0%, transparent 50%),
+        repeating-linear-gradient(
+            45deg,
+            transparent,
+            transparent 20px,
+            rgba(0,0,0,0.04) 20px,
+            rgba(0,0,0,0.04) 21px
+        );
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100dvh;
+    padding: 24px 16px;
+    font-family: var(--font-body);
+    position: relative;
+}
+
+/* --- Floating Background Fish --- */
+.bg-fish {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 0;
+}
+
+.bg-fish span {
+    position: absolute;
+    font-size: clamp(20px, 5vw, 40px);
+    opacity: 0.12;
+    animation: floatFish linear infinite;
+}
+
+.bg-fish span:nth-child(1) { left: 5%;  top: 15%; animation-duration: 18s; animation-delay: 0s;   font-size: 28px; }
+.bg-fish span:nth-child(2) { left: 20%; top: 70%; animation-duration: 22s; animation-delay: -4s;  font-size: 22px; }
+.bg-fish span:nth-child(3) { left: 75%; top: 25%; animation-duration: 20s; animation-delay: -8s;  font-size: 35px; }
+.bg-fish span:nth-child(4) { left: 88%; top: 65%; animation-duration: 16s; animation-delay: -2s;  font-size: 24px; }
+.bg-fish span:nth-child(5) { left: 50%; top: 85%; animation-duration: 25s; animation-delay: -6s;  font-size: 30px; }
+.bg-fish span:nth-child(6) { left: 40%; top: 5%;  animation-duration: 19s; animation-delay: -10s; font-size: 26px; }
+
+@keyframes floatFish {
+    0%   { transform: translateY(0px) rotate(0deg);   opacity: 0.08; }
+    50%  { transform: translateY(-30px) rotate(5deg); opacity: 0.15; }
+    100% { transform: translateY(0px) rotate(0deg);   opacity: 0.08; }
+}
+
+/* --- Page Wrapper --- */
+.page-wrapper {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 460px;
+    animation: slideUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(32px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* --- Can Label Card --- */
+.can-label {
+    width: 100%;
+    background: var(--cream);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: var(--shadow-label);
+    border: 3px solid var(--gold);
+    outline: 8px solid transparent;
+    outline-offset: -10px;
+    position: relative;
+}
+
+/* Inner double-border effect via pseudo */
+.can-label::before {
+    content: '';
+    position: absolute;
+    inset: 8px;
+    border: 1.5px solid var(--gold);
+    border-radius: 10px;
+    pointer-events: none;
+    z-index: 10;
+    opacity: 0.5;
+}
+
+/* --- Decorative Bands --- */
+.band {
+    background: var(--red);
+    overflow: hidden;
+}
+
+.band--top  { border-bottom: 3px solid var(--gold); }
+.band--bottom { border-top: 3px solid var(--gold); }
+
+.band-inner {
+    padding: 8px 0;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.band-text {
+    display: inline-block;
+    color: var(--gold-lt);
+    font-family: var(--font-body);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    animation: marquee 16s linear infinite;
+}
+
+@keyframes marquee {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+}
+
+/* Duplicate text for seamless loop */
+.band-text::after {
+    content: attr(data-text);
+}
+
+/* --- Label Header --- */
+.label-header {
+    text-align: center;
+    padding: 28px 24px 16px;
+    background: var(--cream);
+    border-bottom: 2px dashed var(--gold);
+}
+
+.label-subtitle {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    color: var(--light);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+}
+
+.label-title {
+    font-family: var(--font-display);
+    font-size: clamp(36px, 9vw, 56px);
+    font-weight: 900;
+    color: var(--red);
+    line-height: 1;
+    letter-spacing: -0.01em;
+    text-shadow: 3px 3px 0 rgba(192, 57, 43, 0.15);
+    margin-bottom: 4px;
+}
+
+.label-eng {
+    font-family: var(--font-display);
+    font-size: clamp(11px, 3vw, 14px);
+    letter-spacing: 0.35em;
+    color: var(--teal);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+}
+
+.ornament {
+    font-size: 16px;
+    color: var(--gold);
+    letter-spacing: 4px;
+}
+
+/* --- Illustration --- */
+.illustration {
+    background: var(--teal);
+    background-image:
+        radial-gradient(ellipse at center bottom, rgba(255,255,255,0.08) 0%, transparent 60%);
+    padding: 28px 0 0;
+    position: relative;
+    overflow: hidden;
+    min-height: 130px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+.fish-scene {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.fish-big {
+    font-size: clamp(60px, 16vw, 88px);
+    display: block;
+    animation: bobble 3s ease-in-out infinite;
+    filter: drop-shadow(0 8px 16px rgba(0,0,0,0.3));
+    line-height: 1;
+    margin-bottom: -4px;
+}
+
+@keyframes bobble {
+    0%, 100% { transform: translateY(0) rotate(-3deg); }
+    50%       { transform: translateY(-10px) rotate(3deg); }
+}
+
+.waves {
+    width: 100%;
+    height: 32px;
+    position: relative;
+    overflow: hidden;
+}
+
+.wave {
+    position: absolute;
+    bottom: 0;
+    width: 200%;
+    height: 32px;
+    background: var(--cream);
+    border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+}
+
+.wave1 {
+    animation: waveMove 4s linear infinite;
+    opacity: 1;
+}
+
+.wave2 {
+    animation: waveMove 4s linear infinite reverse;
+    opacity: 0.5;
+    height: 24px;
+    bottom: 4px;
+    background: var(--cream-dk);
+}
+
+@keyframes waveMove {
+    from { transform: translateX(-50%); }
+    to   { transform: translateX(0); }
+}
+
+/* --- Label Body (Form) --- */
+.label-body {
+    padding: 24px 28px 28px;
+    background: var(--cream);
+}
+
+.instruction {
+    text-align: center;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--mid);
+    margin-bottom: 2px;
+}
+
+.instruction-eng {
+    text-align: center;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    color: var(--light);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+}
+
+/* --- Form --- */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-icon {
+    position: absolute;
+    left: 14px;
+    font-size: 16px;
+    pointer-events: none;
+    z-index: 1;
+    line-height: 1;
+}
+
+.intext {
+    width: 100%;
+    padding: 14px 16px 14px 44px;
+    background: white;
+    border: 2px solid var(--cream-dk);
+    border-radius: 10px;
+    font-family: var(--font-body);
+    font-size: 16px;  /* Prevents iOS zoom on focus */
+    color: var(--dark);
+    outline: none;
+    transition: border-color 0.25s, box-shadow 0.25s;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+.intext::placeholder {
+    color: var(--light);
+    opacity: 0.8;
+}
+
+.intext:focus {
+    border-color: var(--teal-lt);
+    box-shadow: 0 0 0 4px rgba(26, 107, 107, 0.12);
+}
+
+.intext.shake {
+    animation: shake 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97);
+}
+
+@keyframes shake {
+    10%, 90% { transform: translateX(-3px); }
+    20%, 80% { transform: translateX(5px);  }
+    30%, 50%, 70% { transform: translateX(-6px); }
+    40%, 60% { transform: translateX(6px);  }
+}
+
+/* --- Button --- */
+button {
+    width: 100%;
+    padding: 15px 20px;
+    background: var(--red);
+    border: none;
+    border-radius: 10px;
+    color: white;
+    font-family: var(--font-body);
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+    box-shadow: var(--shadow-btn);
+    -webkit-appearance: none;
+    touch-action: manipulation;
+    position: relative;
+    overflow: hidden;
+}
+
+button::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.12) 0%, transparent 60%);
+    pointer-events: none;
+}
+
+.btn-icon {
+    font-size: 18px;
+    transition: transform 0.2s;
+}
+
+button:hover {
+    background: var(--red-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(192, 57, 43, 0.55);
+}
+
+button:hover .btn-icon {
+    transform: translateX(4px);
+}
+
+button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(192, 57, 43, 0.4);
+}
+
+/* --- Footer --- */
+.footer-note {
+    margin-top: 16px;
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.4);
+    letter-spacing: 0.08em;
+    text-align: center;
+}
+
+/* --- SweetAlert2 Custom --- */
+.swal-custom.swal2-popup {
+    border-radius: 16px !important;
+    font-family: var(--font-body) !important;
+    border: 2px solid var(--gold) !important;
+}
+
+/* ==============================================
+   RESPONSIVE BREAKPOINTS
+   ============================================== */
+
+/* Mobile S (< 360px) */
+@media (max-width: 359px) {
+    .label-title { font-size: 30px; }
+    .label-body  { padding: 20px 18px 24px; }
+}
+
+/* Tablet & up (≥ 640px) */
+@media (min-width: 640px) {
+    .page-wrapper { max-width: 440px; }
+    .can-label    { border-radius: 20px; }
+}
+
+/* Desktop (≥ 1024px) */
+@media (min-width: 1024px) {
+    body          { padding: 40px; }
+    .page-wrapper { max-width: 460px; }
+    .label-body   { padding: 28px 36px 36px; }
+}
+
+/* Reduced motion accessibility */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    /* Keep label light for legibility — intentional */
+    .footer-note { color: rgba(255,255,255,0.35); }
+}
+
+/* Landscape mobile */
+@media (max-height: 600px) and (orientation: landscape) {
+    body              { padding: 12px 16px; }
+    .label-header     { padding: 16px 24px 10px; }
+    .illustration     { min-height: 80px; padding-top: 16px; }
+    .fish-big         { font-size: 48px; }
+    .label-body       { padding: 16px 24px 20px; }
+    .instruction-eng  { margin-bottom: 12px; }
+}
