@@ -1,117 +1,65 @@
 const passwordForm = document.getElementById("password-form");
-
-passwordForm.addEventListener("submit", async function(e) {
-    e.preventDefault(); // ป้องกันหน้าเว็บรีโหลด
-    
+passwordForm.addEventListener("submit", async function (e) {
+    e.preventDefault();
     const textElement = document.getElementById("text-password");
-    const passwordValue = textElement.value.trim(); // ดึงค่าข้อความออกมา
-    
+    const passwordValue = textElement.value.trim();
+
     if (passwordValue === "") return;
 
-    // 1. แสดง Loading Popup
+    // Loading popup
     Swal.fire({
         title: "กำลังตรวจสอบ",
         text: "กรุณารอสักครู่...",
         allowOutsideClick: false,
-        didOpen: () => {
-            Swal.showLoading();
-        }
+        customClass: { popup: 'swal-custom' },
+        didOpen: () => { Swal.showLoading(); }
     });
 
-    // 2. หน่วงเวลาจำลองการโหลด (เช่น 1.5 วินาที)
     await new Promise(resolve => setTimeout(resolve, 1500));
 
-    // 3. ปิด Loading และแสดงผลลัพธ์
-    if (passwordValue === "lateral root") {
+    const CONFIRM_BTN_COLOR = "#c0392b";
+
+    const results = {
+        "lateral root": { num: 1, letter: "p" },
+        "tongue and saliva": { num: 2, letter: "a" },
+        "frontal lobe": { num: 3, letter: "p" },
+        "met leu thr asn asp gly": { num: 4, letter: "a" },
+        "custard apple": { num: 5, letter: "i" },
+    };
+
+    if (results[passwordValue]) {
+        const { num, letter } = results[passwordValue];
         Swal.fire({
             icon: "success",
             title: "✅ ถูกต้อง!",
             html: `
-                <div style="text-align:center;">
-                    <p>1</p>
-                    <h2 style="color:#28a745; margin: 10px 0;">p</h2>
-                    <p style="font-size: 0.9em; color: #666;">zuzu</p>
-                </div>
-            `,
+                        <div style="text-align:center;font-family:'Sarabun',sans-serif;">
+                            <p style="color:#888;font-size:14px;">ข้อที่</p>
+                            <p style="font-size:22px;font-weight:700;color:#333;">${num}</p>
+                            <h2 style="color:#2e7d32;font-size:48px;margin:10px 0;letter-spacing:4px;">${letter}</h2>
+                            <p style="font-size:13px;color:#aaa;letter-spacing:2px;">zuzu</p>
+                        </div>
+                    `,
             confirmButtonText: "รับทราบ",
-            confirmButtonColor: "#667eea"
+            confirmButtonColor: CONFIRM_BTN_COLOR,
+            customClass: { popup: 'swal-custom' }
         });
-    } 
-    else if (passwordValue === "tongue anv saliva") {
-        Swal.fire({
-            icon: "success",
-            title: "✅ ถูกต้อง!",
-            html: `
-                <div style="text-align:center;">
-                    <p>2</p>
-                    <h2 style="color:#28a745; margin: 10px 0;">a</h2>
-                    <p style="font-size: 0.9em; color: #666;">zuzu</p>
-                </div>
-            `,
-            confirmButtonText: "รับทราบ",
-            confirmButtonColor: "#667eea"
-        });
-    }
-    else if (passwordValue === "frontal lobe") {
-        Swal.fire({
-            icon: "success",
-            title: "✅ ถูกต้อง!",
-            html: `
-                <div style="text-align:center;">
-                    <p>3</p>
-                    <h2 style="color:#28a745; margin: 10px 0;">p</h2>
-                    <p style="font-size: 0.9em; color: #666;">zuzu</p>
-                </div>
-            `,
-            confirmButtonText: "รับทราบ",
-            confirmButtonColor: "#667eea"
-        });
-    }
-    else if (passwordValue === "met leu ile ile asp  gly") {
-        Swal.fire({
-            icon: "success",
-            title: "✅ ถูกต้อง!",
-            html: `
-                <div style="text-align:center;">
-                    <p>4</p>
-                    <h2 style="color:#28a745; margin: 10px 0;">a</h2>
-                    <p style="font-size: 0.9em; color: #666;">zuzu</p>
-                </div>
-            `,
-            confirmButtonText: "รับทราบ",
-            confirmButtonColor: "#667eea"
-        });
-    } 
-    else if (passwordValue === "custard apple") {
-        Swal.fire({
-            icon: "success",
-            title: "✅ ถูกต้อง!",
-            html: `
-                <div style="text-align:center;">
-                    <p>5</p>
-                    <h2 style="color:#28a745; margin: 10px 0;">i</h2>
-                    <p style="font-size: 0.9em; color: #666;">zuzu</p>
-                </div>
-            `,
-            confirmButtonText: "รับทราบ",
-            confirmButtonColor: "#667eea"
-        });
-    } 
-    else {
+    } else {
+        textElement.classList.add('shake');
+        setTimeout(() => textElement.classList.remove('shake'), 600);
+
         Swal.fire({
             icon: "error",
             title: "❌ รหัสไม่ถูกต้อง",
             html: `
-                <div style="text-align:center;">
-                    <p><b style="color:#dc3545;">${passwordValue}</b></p>
-                    <p>ยังไม่ถูกน้าาาา</p>
-                </div>
-            `,
+                        <div style="text-align:center;font-family:'Sarabun',sans-serif;">
+                            <p><b style="color:#c0392b;">${passwordValue}</b></p>
+                            <p style="color:#666;margin-top:6px;">ยังไม่ถูกน้าาาา</p>
+                        </div>
+                    `,
             confirmButtonText: "ลองใหม่",
-            confirmButtonColor: "#667eea"
+            confirmButtonColor: CONFIRM_BTN_COLOR,
+            customClass: { popup: 'swal-custom' }
         });
     }
-
-    // ล้างค่าในช่องรหัสผ่านหลังตรวจสอบเสร็จ (ถ้าต้องการ)
-    // textElement.value = "";
 });
